@@ -1,4 +1,4 @@
-from recap import Candidate, RecapEngine, SIDTrie
+from recap import Candidate, PoERepairer, RecapEngine, SIDTrie
 
 
 def test_legal_normalization_and_fixed_budget_reintegration() -> None:
@@ -46,3 +46,37 @@ def test_non_actionable_gate_keeps_anchor() -> None:
     assert not decision.accepted
     assert decision.reason == "non-actionable"
     assert proposal == anchor
+
+
+def test_poe_repair_refreshes_logits_on_the_new_prefix() -> None:
+    trie = SIDTrie([("a", "x", "u"), ("a", "y", "v")])
+    queried_prefixes = []
+
+    def direct(prefix):
+        queried_prefixes.append(prefix)
+        if prefix == ("a",):
+            return {"x": 0.0, "y": 1.0}
+        return {"v": 1.0}
+
+    def reciprocal(prefix):
+        if prefix == ("a",):
+            return {"x": 0.0, "y": 2.0}
+        return {"v": 1.0}
+
+    repairer = PoERepairer(direct, reciprocal, mixing_weight=0.5)
+    # Evidence length fixes the repair depth but does not supply stale logits.
+    repaired = repairer(("a",), [object(), object()], trie)  # type: ignore[list-item]
+    assert repaired == ("a", "y", "v")
+    assert queried_prefixes == [("a",), ("a", "y")]
+
+
+def test_singleton_legal_set_forces_abstention() -> None:
+    trie = SIDTrie([("a", "x")])
+    engine = RecapEngine(
+        trie, lambda _evidence: (0, 0.99), lambda prefix, _evidence, _trie: (*prefix, "a", "x"),
+        error_threshold=0.8, action_threshold=0.1, max_reciprocal_entropy=1.0,
+    )
+    evidence = engine.evidence_for(("a", "x"), lambda _prefix: {"a": 0.0} if not _prefix else {"x": 0.0}, lambda _prefix: {"a": 0.0} if not _prefix else {"x": 0.0})
+    decision = engine.decide(evidence)
+    assert not decision.accepted
+    assert decision.reason == "singleton-legal-set"
