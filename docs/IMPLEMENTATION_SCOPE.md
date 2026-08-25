@@ -8,7 +8,9 @@
 | Legal-set-normalized direct/reciprocal beliefs | `RecapEngine.evidence_for` | Both routes are normalized over the same realized prefix and legal children. |
 | First-error/abstention separation | `Locator` + `RecapEngine.decide` | A proposed level is not acted on unless confidence, actionability, and reciprocal certainty pass frozen thresholds. |
 | Prefix-preserving revocation | `RecapEngine.revise` | Only the suffix from the accepted level is supplied to the repairer. |
+| Refreshed PoE repair and bounded refinement | `PoERepairer`, `RecapEngine.refine` | Each regenerated token re-queries both routes under its new prefix; later rounds cannot move before the accepted level. |
 | Direct-score-only reintegration | `RecapEngine.reintegrate` | Candidate scores, deduplication, and beam width remain native. |
+| Portable frozen-rollout validation | `recap.rollout`, `python -m recap validate` | A release can verify trie, beam, route-logit, and native-resolution consistency without a dataset. |
 
 ## Required adapter contract
 

@@ -69,6 +69,7 @@ The sketch leaves calibration, training, validation selection, and native fusion
 - `docs/ADAPTER_CONTRACT.md`: required boundary for a real backbone adapter.
 - `docs/REPRODUCIBILITY.md`: release inputs required before result reproduction can be claimed.
 - `docs/ANONYMITY_AUDIT.md`: review-time identity and artifact hygiene.
+- `docs/RUNNABLE_WORKFLOW.md`: portable JSON rollout format and command-line workflow.
 
 ## Anonymity and release hygiene
 

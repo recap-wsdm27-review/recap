@@ -1,4 +1,5 @@
 from recap import Candidate, PoERepairer, RecapEngine, SIDTrie
+from recap.rollout import RolloutInput, trie_from_json
 
 
 def test_legal_normalization_and_fixed_budget_reintegration() -> None:
@@ -80,3 +81,27 @@ def test_singleton_legal_set_forces_abstention() -> None:
     decision = engine.decide(evidence)
     assert not decision.accepted
     assert decision.reason == "singleton-legal-set"
+
+
+def test_portable_rollout_requires_native_resolution_for_repairs() -> None:
+    trie = trie_from_json([["a", "x"], ["a", "y"]])
+    payload = {
+        "anchor": {"sid": ["a", "x"], "item_id": "x", "direct_score": -1.0},
+        "beam": [{"sid": ["a", "x"], "item_id": "x", "direct_score": -1.0}],
+        "resolved_sids": [
+            {"sid": ["a", "x"], "item_id": "x", "direct_score": -1.0},
+            {"sid": ["a", "y"], "item_id": "y", "direct_score": -0.5},
+        ],
+        "direct_routes": [
+            {"prefix": [], "logits": [{"token": "a", "value": 0.0}]},
+            {"prefix": ["a"], "logits": [{"token": "x", "value": 0.0}, {"token": "y", "value": 1.0}]},
+        ],
+        "reciprocal_routes": [
+            {"prefix": [], "logits": [{"token": "a", "value": 0.0}]},
+            {"prefix": ["a"], "logits": [{"token": "x", "value": 0.0}, {"token": "y", "value": 1.0}]},
+        ],
+    }
+    rollout = RolloutInput.from_json(payload)
+    rollout.validate(trie)
+    assert rollout.resolve_item(("a", "y")) == "y"
+    assert rollout.native_direct_score(("a", "y")) == -0.5
