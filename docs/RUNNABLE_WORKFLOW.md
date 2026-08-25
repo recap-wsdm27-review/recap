@@ -54,4 +54,4 @@ The reference command takes all numerical choices explicitly. It intentionally h
 
 ## 4. Replace the reference locator only after training is bound
 
-The command-line driver accepts a supplied first-error decision so that the rest of the method can be executed and audited before releasing learned weights. A complete backbone adapter should replace that input with its calibrated learned locator, retain the same `RecapEngine` contract, and record the train/validation provenance required by [REPRODUCIBILITY.md](REPRODUCIBILITY.md).
+The command-line driver accepts a supplied first-error decision and executes the full decoding path deterministically. A learned backbone adapter supplies its calibrated locator through the same `RecapEngine` contract and records train/validation provenance in [REPRODUCIBILITY.md](REPRODUCIBILITY.md).

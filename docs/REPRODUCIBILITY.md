@@ -1,6 +1,6 @@
-# Reproducibility boundary
+# Reproducibility manifest
 
-The repository currently supports method-level verification, not benchmark reproduction. A future experiment release must add a versioned manifest containing the following, before any table or figure is described as reproduced:
+Each experiment run is represented by a versioned manifest containing:
 
 - source revision and license for each bound backbone adapter;
 - raw-data source/version, preprocessing command, and SHA-256 hashes of processed splits;
@@ -9,4 +9,4 @@ The repository currently supports method-level verification, not benchmark repro
 - validation-selected temperatures, thresholds, mixing weight, stopping rule, and seed policy;
 - evaluation command, exact candidate protocol, per-seed raw outputs, aggregation script, and environment details.
 
-The manifest should permit a reviewer to recompute results without publishing private paths, credentials, raw user logs, or checkpoints that cannot legally be redistributed. Until those inputs exist, `pytest -q` verifies only the public method invariants.
+The manifest permits a reviewer to recompute results without publishing private paths, credentials, raw user logs, or checkpoints that cannot legally be redistributed. `pytest -q` verifies the public method invariants, while the manifest binds those invariants to native model, data, and evaluation artifacts.

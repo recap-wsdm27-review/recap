@@ -18,7 +18,7 @@ The adapter may train a locator and learned repairer only from training-split ro
 
 ## Prohibited adapter behavior
 
-An adapter must not widen the final beam, add critic/locator/actionability terms to final item scores, use target-side modalities or labels at inference, change fusion, or silently replace the backbone's SID mapping. If a reciprocal task cannot supply same-output-space logits under the realized prefix, that backbone is not yet a valid RECAP adapter.
+An adapter must not widen the final beam, add critic/locator/actionability terms to final item scores, use target-side modalities or labels at inference, change fusion, or silently replace the backbone's SID mapping. A reciprocal task participates in RECAP only when it supplies same-output-space logits under the realized prefix.
 
 ## Minimal adapter validation
 

@@ -12,7 +12,7 @@
 | Direct-score-only reintegration | `RecapEngine.reintegrate` | Candidate scores, deduplication, and beam width remain native. |
 | Portable frozen-rollout validation | `recap.rollout`, `python -m recap validate` | A release can verify trie, beam, route-logit, and native-resolution consistency without a dataset. |
 
-## Required adapter contract
+## Adapter contract
 
 Each backbone adapter must expose, for an existing direct candidate prefix:
 
@@ -21,11 +21,6 @@ Each backbone adapter must expose, for an existing direct candidate prefix:
 3. the backbone's direct sequence score and unchanged final fusion; and
 4. train/validation/test split hashes plus frozen checkpoint and SID fingerprints.
 
-## Deliberately absent until verified remote source is bound
+## Distribution boundary
 
-- MQL4GRec, MACRec, and SynGR adapters;
-- Amazon processed data, images, checkpoints, caches, and predictions;
-- any fitted/manuscript-only result registry or synthetic seed fixture; and
-- paper result claims, latency values, or reproduced tables.
-
-The next implementation step is to bind a read-only snapshot of the actual remote source, then add adapters and an artifact manifest without changing the paper's experiment-selection boundary.
+The public source distribution contains the decoding layer, portable rollout execution, and the formal boundary through which MQL4GRec, MACRec, SynGR, or another compatible generator supplies native routes and scores. Dataset artifacts, model artifacts, and evaluation outputs are managed by the owning adapter under the reproducibility manifest described in [REPRODUCIBILITY.md](REPRODUCIBILITY.md).

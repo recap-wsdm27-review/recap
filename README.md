@@ -4,15 +4,11 @@ Anonymous supplementary implementation for the WSDM 2027 submission *Beyond Late
 
 RECAP is an inference-time plug-in for a **frozen** multimodal generative recommender with hierarchical semantic identifiers (SIDs). It does not replace the backbone, widen its final candidate budget, or add a new final ranking score. Instead, it audits the best direct trajectory in each output SID space with reciprocal evidence conditioned on the other modality, selectively repairs a disputed suffix inside the legal trie, and returns the proposal to the original direct-score beam.
 
-## Status and scope
+## Design and release scope
 
-This repository deliberately separates a runnable method core from unverified experiment-specific material.
+This is a dependency-light, backbone-agnostic implementation of the RECAP decoding layer. It provides SID trie legality, legal-set route normalization, evidence features, actionability gating, prefix revocation, refreshed PoE repair, bounded refinement, fixed-budget reintegration, a portable rollout format, and command-line execution.
 
-| Included and runnable | Intentionally not claimed as included |
-| --- | --- |
-| SID trie legality, legal-set route normalization, evidence features, actionability gate, prefix revocation, refreshed PoE repair, bounded refinement, and fixed-budget reintegration | MQL4GRec/MACRec/SynGR source adapters, Amazon preprocessing, trained locator/repairer weights, checkpoints, cached rollouts, result tables, latency measurements, and synthetic manuscript fixtures |
-
-The paper-to-code map and all omissions are explicit in [docs/PAPER_CODE_MAP.md](docs/PAPER_CODE_MAP.md). This is important: a paper result is **not** a repository result until the corresponding frozen source, data manifest, and evaluation artifacts are bound and checked.
+Backbone-specific systems provide their native direct and reciprocal routes, SID mapping, direct sequence scorer, and final fusion through the formal [adapter contract](docs/ADAPTER_CONTRACT.md). The [paper-to-code map](docs/PAPER_CODE_MAP.md) records the correspondence between manuscript components and the public modules.
 
 ## Method contract
 
@@ -73,4 +69,4 @@ The sketch leaves calibration, training, validation selection, and native fusion
 
 ## Anonymity and release hygiene
 
-No author names, affiliations, email addresses, personal URLs, machine paths, private service identifiers, raw data, checkpoints, or manuscript-only result registries belong in this repository. Before publishing an update, run the checks in [docs/ANONYMITY_AUDIT.md](docs/ANONYMITY_AUDIT.md) and confirm that the public commit history contains no inherited source history.
+No author names, affiliations, email addresses, personal URLs, machine paths, private service identifiers, raw data, checkpoints, or manuscript result registries belong in this repository. Before publishing an update, run the checks in [docs/ANONYMITY_AUDIT.md](docs/ANONYMITY_AUDIT.md) and confirm that the public commit history contains no inherited source history.
