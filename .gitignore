@@ -1,0 +1,26 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+.env
+.env.*
+*.key
+*.pem
+credentials*
+
+# Local and generated material
+work/
+outputs/
+data/
+checkpoints/
+*.ckpt
+*.pt
+*.pth
+
+# Author-only notes must never enter the anonymous repository
+author_info*
+internal_notes*
